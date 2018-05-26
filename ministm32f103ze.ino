@@ -8,6 +8,7 @@ static char line[200];
 
 void setup()
 {
+    pinMode(PE0, OUTPUT);
     PrintInit();
     EditInit(line, sizeof(line));
 }
@@ -19,9 +20,22 @@ static void show_help(const cmd_t *cmds)
     }
 }
 
+static int do_led(int argc, char *argv[])
+{
+    if (argc < 2) {
+        print("Need argument!\n");
+        return -1;
+    }
+    int on = atoi(argv[1]);
+    print("Setting LED PE0 to %d\n", on);
+    digitalWrite(PE0, on);
+    return 0;
+}
+
 static int do_help(int argc, char *argv[]);
 
 const cmd_t commands[] = {
+    {"led",     do_led,     "[val] Set LED to 'val'"},
     {"help",    do_help,    "Show help"},
     {NULL, NULL, NULL}
 };

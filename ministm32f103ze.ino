@@ -8,6 +8,8 @@ static char line[200];
 
 void setup()
 {
+    pinMode(PB10, INPUT);
+    pinMode(PB11, INPUT);
     pinMode(PE0, OUTPUT);
     PrintInit();
     EditInit(line, sizeof(line));
@@ -32,10 +34,17 @@ static int do_led(int argc, char *argv[])
     return 0;
 }
 
+static int do_but(int argc, char *argv[])
+{
+    print("PB10=%d,PB11=%d\n", digitalRead(PB10), digitalRead(PB11));
+    return 0;
+}
+
 static int do_help(int argc, char *argv[]);
 
 const cmd_t commands[] = {
     {"led",     do_led,     "[val] Set LED to 'val'"},
+    {"but",     do_but,     "show values of button inputs"},
     {"help",    do_help,    "Show help"},
     {NULL, NULL, NULL}
 };

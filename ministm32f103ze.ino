@@ -2,9 +2,12 @@
 #include "cmdproc.h"
 #include "editline.h"
 
+#include <RTClock.h>
+
 #include "Arduino.h"
 
 static char line[200];
+static RTClock rtc;
 
 void setup()
 {
@@ -40,11 +43,26 @@ static int do_but(int argc, char *argv[])
     return 0;
 }
 
+static int do_time(int argc, char *argv[])
+{
+    time_t time;
+    if (argc > 1) {
+        time = atoi(argv[1]);
+        print("Setting time to %d\n", (int)time);
+        rtc.setTime(time);
+    }
+
+    time = rtc.getTime();
+    print("Time is now %d\n", (int)time);
+    return 0;
+}
+
 static int do_help(int argc, char *argv[]);
 
 const cmd_t commands[] = {
     {"led",     do_led,     "[val] Set LED to 'val'"},
     {"but",     do_but,     "show values of button inputs"},
+    {"time",    do_time,    "[time] get/set time"},
     {"help",    do_help,    "Show help"},
     {NULL, NULL, NULL}
 };

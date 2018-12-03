@@ -2,7 +2,6 @@
 
 #include "cmdproc.h"
 
-
 static const cmd_t *find_cmd(const cmd_t * commands, const char *name)
 {
     const cmd_t *cmd;
@@ -17,9 +16,10 @@ static const cmd_t *find_cmd(const cmd_t * commands, const char *name)
 static int split(char *input, char *args[], int maxargs)
 {
     int argc = 0;
-    char *p = input;
-    while ((p != NULL) && (argc < maxargs)) {
-        args[argc++] = strsep(&p, " ");
+    char *next = strtok(input, " ");
+    while ((next != NULL) && (argc < maxargs)) {
+        args[argc++] = next;
+        next = strtok(NULL, " ");
     }
     return argc;
 }
